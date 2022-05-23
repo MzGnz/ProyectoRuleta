@@ -31,10 +31,10 @@ public class Apuesta implements Serializable
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Integer id;
+	private Long id;
 	
-	@Column(name = "nombreGanador")
-	private String nombreGanador;
+	@Column(name = "cantidad")
+	private String cantidadApuesta;
 	
 	@Column(name = "cantidadGanada")
 	private Double cantidadGanada;
@@ -46,9 +46,16 @@ public class Apuesta implements Serializable
 	@JoinColumn(name = "ruleta_id", foreignKey = @ForeignKey(name = "FK_RULETA_ID"))
 	private Ruleta ruleta;
 	
-	public Apuesta(Integer id, String nombreGanador, Double cantidadGanada) {
+	public Apuesta(String cantidadApuesta, Double cantidadGanada, Ruleta ruleta) 
+	{
+		this.cantidadApuesta = cantidadApuesta;
+		this.cantidadGanada = cantidadGanada;
+		this.ruleta = ruleta;
+	}
+	
+	public Apuesta(Long id, String cantidadApuesta, Double cantidadGanada) {
 		this.id = id;
-		this.nombreGanador = nombreGanador;
+		this.cantidadApuesta = cantidadApuesta;
 		this.cantidadGanada = cantidadGanada;
 	}
 	
@@ -56,7 +63,7 @@ public class Apuesta implements Serializable
 	{
 		this.fechaCreacion = new Date();
 	}
-	
+
 	private static final long serialVersionUID = -3086878443327311264L;
 
 }

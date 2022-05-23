@@ -3,9 +3,13 @@ package com.ibm.academia.apirest.ruleta.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,7 +36,7 @@ public class Ruleta implements Serializable
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Integer id;
+	private Long id;
 	
 	@Column(name = "estado")
 	private Boolean estadoRuleta;
@@ -41,25 +45,19 @@ public class Ruleta implements Serializable
 	private Integer numeroApuesta;
 	
 	@Column(name = "color")
+	@Enumerated(EnumType.STRING)
 	private ColorRuleta colorRuleta;
-	
-	@Column(name = "cantidad")
-	private Double cantidadApuesta;
 	
 	@Column(name = "fechaCreacion", nullable = false)
 	private Date fechaCreacion;
 	
-	@OneToMany(mappedBy = "ruleta", fetch = FetchType.LAZY)
-	private List<Apuesta> apuestas;
+	@OneToMany(mappedBy = "ruleta", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Apuesta> apuestas;
 	
-	public Ruleta(Integer id, Boolean estadoRuleta, Integer numeroApuesta, ColorRuleta colorRuleta, Double cantidadApuesta, List<Apuesta> apuestas) 
+	public Ruleta(Long id, Boolean estadoRuleta) 
 	{
 		this.id = id;
 		this.estadoRuleta = estadoRuleta;
-		this.numeroApuesta = numeroApuesta;
-		this.colorRuleta = colorRuleta;
-		this.cantidadApuesta = cantidadApuesta;
-		this.apuestas = apuestas;
 	}
 
 	@PrePersist void antesPersistir()

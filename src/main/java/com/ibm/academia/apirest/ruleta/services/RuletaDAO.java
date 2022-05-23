@@ -1,11 +1,11 @@
 package com.ibm.academia.apirest.ruleta.services;
 
-import java.util.Optional;
-
 import com.ibm.academia.apirest.ruleta.entities.Ruleta;
 
-public interface RuletaDAO 
+public interface RuletaDAO extends GenericoDAO<Ruleta>
 {
-	Optional<Ruleta>findById(Long id);
-	
+	void crearRuleta();
+    public Ruleta abrirRuleta(Long id);
+    public Long guardarRuleta(Ruleta ruleta);
+    public Ruleta cerrarRuleta(Long ruleta);
 }
