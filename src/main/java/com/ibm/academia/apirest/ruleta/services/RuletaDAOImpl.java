@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ibm.academia.apirest.ruleta.entities.Apuesta;
 import com.ibm.academia.apirest.ruleta.entities.Ruleta;
 import com.ibm.academia.apirest.ruleta.exceptions.NotFoundException;
 import com.ibm.academia.apirest.ruleta.repositories.RuletaRepository;
@@ -15,17 +16,21 @@ public class RuletaDAOImpl extends GenericoDAOImpl<Ruleta, RuletaRepository> imp
 {
 
 	@Autowired
+	private ApuestaDAO apuestaDAO;
+	
+	@Autowired
 	public RuletaDAOImpl(RuletaRepository repository)
 	{
 		super(repository);
 	}
 
 	@Override
-	public void crearRuleta()
+	public Long crearRuleta()
 		{
 			Ruleta ruleta = new Ruleta();
-			ruleta.setEstadoRuleta(true);
+			ruleta.setEstadoRuleta(false);
 			guardar(ruleta);
+			return ruleta.getId();
 			
 		}
 	
@@ -60,6 +65,16 @@ public class RuletaDAOImpl extends GenericoDAOImpl<Ruleta, RuletaRepository> imp
         oRuleta.get().setEstadoRuleta(false);
         ruletaCerrada = repository.save(oRuleta.get());
         return ruletaCerrada;
+	}
+	
+	@Override
+	public Apuesta crearApuesta(String valorApuesta, Double cantidadApuesta, Ruleta ruleta) 
+	{
+		Apuesta apuesta = new Apuesta();
+		apuesta.setValorApuesta(valorApuesta);
+		apuesta.setCantidadApuesta(cantidadApuesta);
+		apuesta.setRuleta(ruleta);
+		return apuestaDAO.guardar(apuesta);
 	}
 
 }

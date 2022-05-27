@@ -22,7 +22,6 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "apuestas", schema = "juegos")
@@ -33,8 +32,11 @@ public class Apuesta implements Serializable
 	@Column(name = "id")
 	private Long id;
 	
+	@Column(name = "valorApuesta")
+	private String valorApuesta;
+	
 	@Column(name = "cantidad")
-	private String cantidadApuesta;
+	private Double cantidadApuesta;
 	
 	@Column(name = "cantidadGanada")
 	private Double cantidadGanada;
@@ -46,14 +48,22 @@ public class Apuesta implements Serializable
 	@JoinColumn(name = "ruleta_id", foreignKey = @ForeignKey(name = "FK_RULETA_ID"))
 	private Ruleta ruleta;
 	
-	public Apuesta(String cantidadApuesta, Double cantidadGanada, Ruleta ruleta) 
+	public Apuesta() 
 	{
+		super();
+	}
+	
+	public Apuesta(String valorApuesta, Double cantidadApuesta, Double cantidadGanada, Ruleta ruleta) 
+	{
+		this.valorApuesta = valorApuesta;
 		this.cantidadApuesta = cantidadApuesta;
 		this.cantidadGanada = cantidadGanada;
 		this.ruleta = ruleta;
 	}
 	
-	public Apuesta(Long id, String cantidadApuesta, Double cantidadGanada) {
+	public Apuesta(String valorApuesta, Long id, Double cantidadApuesta, Double cantidadGanada) 
+	{
+		this.valorApuesta = valorApuesta;
 		this.id = id;
 		this.cantidadApuesta = cantidadApuesta;
 		this.cantidadGanada = cantidadGanada;
