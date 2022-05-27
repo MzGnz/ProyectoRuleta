@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,7 +46,8 @@ public class Apuesta implements Serializable
 	@Column(name = "fechaCreacion", nullable = false)
 	private Date fechaCreacion;
 	
-	@ManyToOne(optional = true, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+	@ManyToOne//(optional = true, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+	@JsonIgnoreProperties({"apuestas"})
 	@JoinColumn(name = "ruleta_id", foreignKey = @ForeignKey(name = "FK_RULETA_ID"))
 	private Ruleta ruleta;
 	
@@ -72,6 +75,13 @@ public class Apuesta implements Serializable
 	@PrePersist void antesPersistir()
 	{
 		this.fechaCreacion = new Date();
+	}
+
+	public Apuesta(String valorApuesta, Double cantidadApuesta, Ruleta ruleta) {
+		super();
+		this.valorApuesta = valorApuesta;
+		this.cantidadApuesta = cantidadApuesta;
+		this.ruleta = ruleta;
 	}
 
 	private static final long serialVersionUID = -3086878443327311264L;

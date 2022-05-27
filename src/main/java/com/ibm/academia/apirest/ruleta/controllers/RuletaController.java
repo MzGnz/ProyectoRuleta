@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ibm.academia.apirest.ruleta.entities.Apuesta;
@@ -29,6 +30,9 @@ public class RuletaController
 {
 	@Autowired
 	private RuletaDAO ruletaDAO;
+	
+	@Autowired 
+	private ApuestaDAO apuestaDAO;
 	
 	Logger logger = LoggerFactory.getLogger(RuletaController.class);
 
@@ -58,7 +62,7 @@ public class RuletaController
         return new ResponseEntity<>("Operacion exitosa", HttpStatus.OK);
     }
 	
-	/*@PutMapping("cerrarRuleta/{ruletaId}")
+	@PutMapping("/cerrarRuleta/{ruletaId}")
     public ResponseEntity<?> cerrarRuleta(@PathVariable Long ruletaId){
         Optional<Ruleta> oRuleta = ruletaDAO.buscarPorId(ruletaId);
         if(!oRuleta.isPresent())
@@ -77,8 +81,8 @@ public class RuletaController
 
         //List<Apuesta> apuestas = (List<Apuesta>) ruletaDAO.buscarPorIdRuleta(ruletaId);
 
-        return new ResponseEntity<>(apuestas, HttpStatus.OK);
-    }*/
+        return new ResponseEntity<>(apuestaDAO.cerrarApuesta(oRuleta.get().getId()), HttpStatus.OK);
+    }
 	
 	@GetMapping("/listarRuletas")
     public List<Ruleta> listarTodas()
@@ -87,15 +91,10 @@ public class RuletaController
         return ruletas;
     }
 		
-	
-	@PostMapping("crearApuesta/{ruletaId}")
-	public ResponseEntity<?> crearApuesta(@PathVariable Long ruletaId, @RequestBody Apuesta apuesta)
-	{
-		Optional<Ruleta> ruletaOptional = ruletaDAO.buscarPorId(ruletaId);
-		if(ruletaOptional.isEmpty())
-			throw new NotFoundException(String.format("La ruleta con Id %d no existe", ruletaId));
-		return new ResponseEntity<>(ruletaDAO.crearApuesta(apuesta.getValorApuesta(), apuesta.getCantidadApuesta(), ruletaOptional.get()),HttpStatus.OK);
-		
+	@PostMapping("/apostar")
+	public ResponseEntity<?> apostarRuleta(@RequestParam Long idRuleta, @RequestParam String valorApuesta, @RequestParam Double montoApuesta) {
+	    return new ResponseEntity<>(ruletaDAO.apostar(idRuleta, valorApuesta, montoApuesta), HttpStatus.ACCEPTED);
+
 	}
 	
 }

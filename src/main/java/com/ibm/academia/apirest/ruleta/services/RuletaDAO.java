@@ -9,5 +9,6 @@ public interface RuletaDAO extends GenericoDAO<Ruleta>
     public Ruleta abrirRuleta(Long id);
     public Long guardarRuleta(Ruleta ruleta);
     public Ruleta cerrarRuleta(Long ruleta);
-	public Apuesta crearApuesta(String valorApuesta, Double cantidadApuesta, Ruleta ruleta);
+    
+    Apuesta apostar(Long id, String valorApuesta, Double monto);
 }

@@ -10,6 +10,6 @@ import com.ibm.academia.apirest.ruleta.entities.Apuesta;
 public interface ApuestaRepository extends CrudRepository<Apuesta, Long>
 {
 	@Query("select a from Apuesta a where a.ruleta.id=?1")
-    Iterable<Apuesta> findApuestaById(Integer idRuleta);
+    Iterable<Apuesta> findApuestaById(Long idRuleta);
 	
 }

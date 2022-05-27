@@ -68,13 +68,17 @@ public class RuletaDAOImpl extends GenericoDAOImpl<Ruleta, RuletaRepository> imp
 	}
 	
 	@Override
-	public Apuesta crearApuesta(String valorApuesta, Double cantidadApuesta, Ruleta ruleta) 
-	{
-		Apuesta apuesta = new Apuesta();
-		apuesta.setValorApuesta(valorApuesta);
-		apuesta.setCantidadApuesta(cantidadApuesta);
-		apuesta.setRuleta(ruleta);
-		return apuestaDAO.guardar(apuesta);
+	public Apuesta apostar(Long ruletaId, String valorApuesta, Double monto) {
+	    Optional<Ruleta> ruleta = repository.findById(ruletaId);
+	    Apuesta nuevaApuesta;
+	    if (ruleta.get().getEstadoRuleta() == false) 
+	    {
+	        throw new NotFoundException("No es posibles apostar a esta ruleta");
+	    }
+	        nuevaApuesta = apuestaDAO.crearApuesta(valorApuesta, monto, ruleta.get());
+	        return nuevaApuesta;
+
+
 	}
 
 }
